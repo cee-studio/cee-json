@@ -1,6 +1,5 @@
-/* JSON snprintf
-   C reimplementation of
-     Artyom Beilis (Tonkikh) <artyomtnk@yahoo.com>'s json.cpp
+/* JSON snprint
+   C reimplementation of cppcms's json.cpp
 */
 #ifndef CEE_JSON_AMALGAMATION
 #include "json.h"
@@ -16,7 +15,7 @@ struct counter {
 };
 
 static struct counter * push(uintptr_t tabs, bool more_siblings,
-                             struct cee_stack * sp, struct json * j) {
+                             struct cee_stack * sp, struct cee_json * j) {
   struct counter * p = NULL;
   if (j == NULL) {
     p = cee_block(sizeof(struct counter));
@@ -27,9 +26,9 @@ static struct counter * push(uintptr_t tabs, bool more_siblings,
       case is_object:
         {
           p = cee_block(sizeof(struct counter));
-          struct cee_map * mp = json_to_object(j);
+          struct cee_map * mp = cee_json_to_object(j);
           p->array = cee_map_keys(mp);
-          p->object = json_to_object(j);
+          p->object = cee_json_to_object(j);
           p->tabs = tabs;
           p->next = 0;
           p->more_siblings = 0;
@@ -38,7 +37,7 @@ static struct counter * push(uintptr_t tabs, bool more_siblings,
       case is_array:
         {
           p = cee_block(sizeof(struct counter));
-          p->array = json_to_array(j);
+          p->array = cee_json_to_array(j);
           p->tabs = tabs;
           p->next = 0;
           p->more_siblings = 0;
@@ -62,7 +61,7 @@ static struct counter * push(uintptr_t tabs, bool more_siblings,
 }
 
 static void pad (uintptr_t * offp, char * buf, struct counter * cnt, 
-                 enum json_format f) {
+                 enum cee_json_format f) {
   if (!f) return;
   
   uintptr_t offset = *offp;
@@ -76,7 +75,7 @@ static void pad (uintptr_t * offp, char * buf, struct counter * cnt,
   return;
 }
 
-static void delimiter (uintptr_t * offp, char * buf, enum json_format f, 
+static void delimiter (uintptr_t * offp, char * buf, enum cee_json_format f, 
                        struct counter * cnt, char c) 
 {
   uintptr_t offset = *offp;
@@ -177,12 +176,12 @@ static void str_append(char * out, uintptr_t *offp, char *begin, unsigned len) {
 }
 
 /*
- * compute how many bytes are needed to serialize json as a string
+ * compute how many bytes are needed to serialize cee_json as a string
  */
-size_t json_snprintf (char * buf, size_t size, struct json * j, 
-                      enum json_format f) {
+size_t cee_json_snprint (char * buf, size_t size, struct cee_json * j, 
+                         enum cee_json_format f) {
   struct cee_tuple * cur;
-  struct json * cur_json;
+  struct cee_json * cur_json;
   struct counter * ccnt;
   uintptr_t incr = 0;
   
@@ -192,7 +191,7 @@ size_t json_snprintf (char * buf, size_t size, struct json * j,
   uintptr_t offset = 0;
   while (!cee_stack_empty(sp) && !cee_stack_full(sp)) {
     cur = cee_stack_top(sp, 0);
-    cur_json = (struct json *)(cur->_[1]);
+    cur_json = (struct cee_json *)(cur->_[1]);
     ccnt = (struct counter *)(cur->_[0]);
     
     switch(cur_json->t) {
@@ -211,7 +210,7 @@ size_t json_snprintf (char * buf, size_t size, struct json * j,
         {
           pad(&offset, buf, ccnt, f);
           char * s = "false";			
-          if (json_to_bool(cur_json))
+          if (cee_json_to_bool(cur_json))
             s = "true";
           if (buf) 
             memcpy(buf + offset, s, strlen(s));
@@ -234,7 +233,7 @@ size_t json_snprintf (char * buf, size_t size, struct json * j,
         break;
       case is_string:
         {
-          char * str = (char *)json_to_string(cur_json);
+          char * str = (char *)cee_json_to_string(cur_json);
           pad(&offset, buf, ccnt, f);
           str_append(buf, &offset, str, strlen(str));
           if (ccnt->more_siblings)
@@ -245,9 +244,9 @@ size_t json_snprintf (char * buf, size_t size, struct json * j,
       case is_number:
         {
           pad(&offset, buf, ccnt, f);
-          incr = cee_box_snprintf(NULL, 0, json_to_number(cur_json));
+          incr = cee_boxed_snprint (NULL, 0, cee_json_to_number(cur_json));
           if (buf) {
-            cee_box_snprintf(buf+offset, incr, json_to_number(cur_json));
+            cee_boxed_snprint (buf+offset, incr, cee_json_to_number(cur_json));
           }
           offset+=incr;
           if (ccnt->more_siblings)
@@ -268,7 +267,7 @@ size_t json_snprintf (char * buf, size_t size, struct json * j,
               more_siblings = true;
             ccnt->next++;
             push (ccnt->tabs + 1, more_siblings, sp, 
-                  (struct json *)(ccnt->array->_[i]));
+                  (struct cee_json *)(ccnt->array->_[i]));
           } 
           else {
             delimiter(&offset, buf, f, ccnt, ']');
@@ -292,7 +291,7 @@ size_t json_snprintf (char * buf, size_t size, struct json * j,
 
             ccnt->next++;
             char * key = (char *)ccnt->array->_[i];
-            struct json * j1 = cee_map_find(ccnt->object, ccnt->array->_[i]);
+            struct cee_json * j1 = cee_map_find(ccnt->object, ccnt->array->_[i]);
             unsigned klen = strlen(key);
             pad(&offset, buf, ccnt, f);
             str_append(buf, &offset, key, klen);

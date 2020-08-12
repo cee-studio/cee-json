@@ -116,7 +116,7 @@ static bool parse_number(struct tokenizer *t) {
   return x == 1;
 }
 
-enum token json_next_token(struct tokenizer * t) {
+enum token cee_json_next_token(struct tokenizer * t) {
   for (;;t->buf++) {
     if (t->buf == t->buf_end)
       return tock_eof;

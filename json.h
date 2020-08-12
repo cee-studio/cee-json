@@ -9,10 +9,10 @@
 
 #define MAX_JSON_DEPTH 500
 
-struct json_null {};
-struct json_undefined {};
+struct cee_json_null {};
+struct cee_json_undefined {};
 
-enum json_type {
+enum cee_json_type {
   is_undefined,	///< Undefined value
   is_null,	///< null value
   is_boolean,	///< boolean value
@@ -22,66 +22,67 @@ enum json_type {
   is_array	///< array value
 };
 
-struct json {
-	enum json_type t;
+struct cee_json {
+	enum cee_json_type t;
   union {
     struct cee_singleton * null;
     struct cee_singleton * undefined;
     struct cee_singleton * boolean;
-    struct cee_box       * number;
+    struct cee_boxed     * number;
     struct cee_str       * string;
     struct cee_vect      * array;
     struct cee_map       * object;
   } value;
 };
 
-enum json_format {
+enum cee_json_format {
   compact = 0,
   readable = 1
 };
 
-extern enum json_type json_type  (struct json *);
-extern bool json_is_undefined (struct json *);
-extern bool json_is_null (struct json *);
-extern bool json_to_bool (struct json *);
+extern enum cee_json_type cee_json_type  (struct cee_json *);
+extern bool cee_json_is_undefined (struct cee_json *);
+extern bool cee_json_is_null (struct cee_json *);
+extern bool cee_json_to_bool (struct cee_json *);
 
-extern struct json * json_find (struct json *, char *);
-extern struct json * json_get(struct json *, char *, struct json * def);
+extern struct json * cee_json_find (struct cee_json *, char *);
+extern struct json * cee_json_get(struct cee_json *, char *, 
+                                  struct cee_json * def);
 
-extern bool json_save (struct json *, FILE *, int how);
-extern struct json * json_load_from_file (FILE *, bool force_eof, int * error_at_line);
-extern struct json * json_load_from_buffer (int size, char *, int line);
-extern int json_cmp (struct json *, struct json *);
+extern bool cee_json_save (struct cee_json *, FILE *, int how);
+extern struct cee_json * cee_json_load_from_file (FILE *, bool force_eof, 
+                                                  int * error_at_line);
+extern struct cee_json * cee_json_load_from_buffer (int size, char *, int line);
+extern int cee_json_cmp (struct cee_json *, struct cee_json *);
 
-extern struct cee_vect * json_to_array (struct json *);
-extern struct cee_map * json_to_object (struct json *);
-extern struct cee_box * json_to_number (struct json *);
-extern struct cee_str * json_to_string (struct json *);
+extern struct cee_vect * cee_json_to_array (struct cee_json *);
+extern struct cee_map * cee_json_to_object (struct cee_json *);
+extern struct cee_boxed * cee_json_to_number (struct cee_json *);
+extern struct cee_str * cee_json_to_string (struct cee_json *);
 
-extern struct json * json_true();
-extern struct json * json_false();
-extern struct json * json_undefined ();
-extern struct json * json_null ();
-extern struct json * json_object();
-extern struct json * json_number (double d);
-extern struct json * json_string(struct cee_str * s);
-extern struct json * json_array(int s);
+extern struct cee_json * cee_json_true();
+extern struct cee_json * cee_json_false();
+extern struct cee_json * cee_json_undefined ();
+extern struct cee_json * cee_json_null ();
+extern struct cee_json * cee_json_object();
+extern struct cee_json * cee_json_number (double d);
+extern struct cee_json * cee_json_string(struct cee_str * s);
+extern struct cee_json * cee_json_array(int s);
 
-extern void json_object_set (struct json *, char *, struct json *);
-extern void json_object_set_bool (struct json *, char *, bool);
-extern void json_object_set_string (struct json *, char *, char *);
-extern void json_object_set_number (struct json *, char *, double);
+extern void cee_json_object_set (struct cee_json *, char *, struct cee_json *);
+extern void cee_json_object_set_bool (struct cee_json *, char *, bool);
+extern void cee_json_object_set_string (struct cee_json *, char *, char *);
+extern void cee_json_object_set_number (struct cee_json *, char *, double);
 
-extern void json_array_append (struct json *, struct json *);
-extern void json_array_append_bool (struct json *, bool);
-extern void json_array_append_string (struct json *, char *);
-extern void json_array_append_number (struct json *, double);
+extern void cee_json_array_append (struct cee_json *, struct cee_json *);
+extern void cee_json_array_append_bool (struct cee_json *, bool);
+extern void cee_json_array_append_string (struct cee_json *, char *);
+extern void cee_json_array_append_number (struct cee_json *, double);
 
-extern size_t json_snprintf(char * buf, size_t size, struct json *, 
-                                 enum json_format);
+extern size_t cee_json_snprint (char * buf, size_t size, struct cee_json *, 
+                                enum cee_json_format);
 
-extern bool json_parse(char * buf, uintptr_t len, 
-                       struct json **out, bool force_eof,
-                       int *error_at_line);
+extern bool cee_json_parse(char * buf, uintptr_t len, struct cee_json **out, 
+                           bool force_eof, int *error_at_line);
 
 #endif // ORCA_JSON_H
