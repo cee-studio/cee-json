@@ -6,9 +6,9 @@
 //  See accompanying file COPYING.TXT file for licensing details.
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef ORCA_JSON_UTF8_H
-#define ORCA_JSON_UTF8_H
-#ifndef ORCA_JSON_AMALGAMATION
+#ifndef CEE_JSON_UTF8_H
+#define CEE_JSON_UTF8_H
+#ifndef CEE_JSON_AMALGAMATION
 #include <stdint.h>
 #include <stdbool.h>
 #endif

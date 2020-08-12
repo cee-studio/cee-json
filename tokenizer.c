@@ -1,4 +1,4 @@
-#ifndef ORCA_JSON_AMALGAMATION
+#ifndef CEE_JSON_AMALGAMATION
 #include "cee.h"
 #include "json.h"
 #include "utf8.h"

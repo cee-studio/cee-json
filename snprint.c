@@ -2,7 +2,7 @@
    C reimplementation of
      Artyom Beilis (Tonkikh) <artyomtnk@yahoo.com>'s json.cpp
 */
-#ifndef ORCA_JSON_AMALGAMATION
+#ifndef CEE_JSON_AMALGAMATION
 #include "json.h"
 #include <string.h>
 #endif

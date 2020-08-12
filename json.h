@@ -1,6 +1,6 @@
-#ifndef ORCA_JSON_H
-#define ORCA_JSON_H
-#ifndef ORCA_JSON_AMALGAMATION
+#ifndef CEE_JSON_H
+#define CEE_JSON_H
+#ifndef CEE_JSON_AMALGAMATION
 #include "cee.h"
 #include <stdbool.h>
 #include <stdio.h>

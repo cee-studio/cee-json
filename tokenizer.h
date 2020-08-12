@@ -1,5 +1,5 @@
-#ifndef ORCA_JSON_TOK_H
-#define ORCA_JSON_TOK_H
+#ifndef CEE_JSON_TOKENIZER_H
+#define CEE_JSON_TOKENIZER_H
 enum token {
   tock_eof = 255,
   tock_err,

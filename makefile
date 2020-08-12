@@ -1,17 +1,17 @@
-JSON_SRC=value.c parser.c snprintf.c tokenizer.c
+JSON_SRC=value.c parser.c snprint.c tokenizer.c
 JSON_HDR=json.h tokenizer.h utf8.h
 
 HEADERS=stdlib.h string.h errno.h sys/types.h sys/stat.h unistd.h stdio.h
 
 define json_amalgamation
-	@echo "#ifndef ORCA_JSON_ONE" > $(1)
-	@echo "#define ORCA_JSON_ONE" >> $(1)
+	@echo "#ifndef CEE_JSON_ONE" > $(1)
+	@echo "#define CEE_JSON_ONE" >> $(1)
 	@echo "#define _GNU_SOURCE" >> $(1)
 	@for ii in $(HEADERS); do echo '#include <'$$ii'>' >> $(1); done
 	@echo "#include \"cee.h\"" >> $(1)
 	@echo " " >> $(1)
 	@for ii in $(JSON_HDR); do cat $$ii >> $(1); echo " " >> $(1); done
-	@echo "#define ORCA_JSON_AMALGAMATION" > tmp.c
+	@echo "#define CEE_JSON_AMALGAMATION" > tmp.c
 	@for ii in $(JSON_SRC); do echo '#include "'$$ii'"' >> tmp.c; done  
 	$(CC) -E $(2) -nostdinc tmp.c >> $(1)
 	@echo "#endif" >> $(1)
