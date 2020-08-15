@@ -30,7 +30,7 @@ struct cee_json {
     struct cee_singleton * boolean;
     struct cee_boxed     * number;
     struct cee_str       * string;
-    struct cee_vect      * array;
+    struct cee_array      * array;
     struct cee_map       * object;
   } value;
 };
@@ -55,7 +55,7 @@ extern struct cee_json * cee_json_load_from_file (FILE *, bool force_eof,
 extern struct cee_json * cee_json_load_from_buffer (int size, char *, int line);
 extern int cee_json_cmp (struct cee_json *, struct cee_json *);
 
-extern struct cee_vect * cee_json_to_array (struct cee_json *);
+extern struct cee_array * cee_json_to_array (struct cee_json *);
 extern struct cee_map * cee_json_to_object (struct cee_json *);
 extern struct cee_boxed * cee_json_to_number (struct cee_json *);
 extern struct cee_str * cee_json_to_string (struct cee_json *);
