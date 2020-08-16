@@ -43,7 +43,7 @@ struct cee_map * cee_json_to_object (struct cee_json * p) {
   }
   return NULL;
 }
-struct cee_array * cee_json_to_array (struct cee_json * p) {
+struct cee_list * cee_json_to_array (struct cee_json * p) {
   if (p->t == is_array) {
     return p->value.array;
   }
@@ -86,7 +86,7 @@ struct cee_json * cee_json_string(struct cee_str *s) {
 }
 
 struct cee_json * cee_json_array(int s) {
-  struct cee_array * v = cee_array (s);
+  struct cee_list * v = cee_list (s);
   struct cee_tagged * t = cee_tagged (is_array, v);
   return (struct cee_json *)t;
 }
@@ -126,24 +126,24 @@ void cee_json_object_set_number (struct cee_json * j, char * key, double real) {
 }
 
 void cee_json_array_append (struct cee_json * j, struct cee_json *v) {
-  struct cee_array * o = cee_json_to_array(j);
+  struct cee_list * o = cee_json_to_array(j);
   if (!o) 
     cee_segfault();
-  cee_array_append(o, v);
+  cee_list_append(o, v);
 }
 
 void cee_json_array_append_bool (struct cee_json * j, bool b) {
-  struct cee_array * o = cee_json_to_array(j);
+  struct cee_list * o = cee_json_to_array(j);
   if (!o) 
     cee_segfault();
-  cee_array_append(o, cee_json_bool(b));
+  cee_list_append(o, cee_json_bool(b));
 }
 
 void cee_json_array_append_string (struct cee_json * j, char * x) {
-  struct cee_array * o = cee_json_to_array(j);
+  struct cee_list * o = cee_json_to_array(j);
   if (!o) 
     cee_segfault();
-  cee_array_append(o, cee_json_string(cee_str("%s", x)));
+  cee_list_append(o, cee_json_string(cee_str("%s", x)));
 }
 
 /*

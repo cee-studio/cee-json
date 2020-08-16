@@ -8,7 +8,7 @@
 
 struct counter {
   uintptr_t next;
-  struct cee_array * array;
+  struct cee_list * array;
   struct cee_map  * object;
   char tabs;
   char more_siblings;
@@ -260,7 +260,7 @@ size_t cee_json_snprint (char * buf, size_t size, struct cee_json * j,
           if (i == 0) 
             delimiter(&offset, buf, f, ccnt, '[');
           
-          uintptr_t n = cee_array_size(ccnt->array);
+          uintptr_t n = cee_list_size(ccnt->array);
           if (i < n) {
             bool more_siblings = false;
             if (1 < n && i+1 < n)
@@ -283,7 +283,7 @@ size_t cee_json_snprint (char * buf, size_t size, struct cee_json * j,
           if (i == 0)
             delimiter(&offset, buf, f, ccnt, '{');
           
-          uintptr_t n = cee_array_size(ccnt->array);
+          uintptr_t n = cee_list_size(ccnt->array);
           if (i < n) {
             bool more_siblings = false;
             if (1 < n && i+1 < n)
