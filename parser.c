@@ -180,23 +180,23 @@ bool cee_json_parse(char * buf, uintptr_t len, struct cee_json **out, bool force
         struct cee_list * ar = cee_json_to_array(top->_[1]);
         
         if(c==tock_str)  {
-          cee_list_append(ar, cee_json_string(tock.str));
+          cee_list_append(&ar, cee_json_string(tock.str));
           state=st_array_close_or_comma_expected;
         } 
         else if(c==tock_true) {
-          cee_list_append(ar, cee_json_true());
+          cee_list_append(&ar, cee_json_true());
           state=st_array_close_or_comma_expected;
         } 
         else if(c==tock_false) {
-          cee_list_append(ar, cee_json_false());
+          cee_list_append(&ar, cee_json_false());
           state=st_array_close_or_comma_expected;
         }
         else if(c==tock_null) {
-          cee_list_append(ar, cee_json_null());
+          cee_list_append(&ar, cee_json_null());
           state=st_array_close_or_comma_expected;
         }
         else if(c==tock_number) {
-          cee_list_append(ar, cee_json_number(tock.real));
+          cee_list_append(&ar, cee_json_number(tock.real));
           state=st_array_close_or_comma_expected;
         }
         else if(c=='[') {

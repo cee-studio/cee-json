@@ -38,30 +38,30 @@ struct cee_json * cee_json_null () {
 }
 
 struct cee_map * cee_json_to_object (struct cee_json * p) {
-  if (p->t == is_object) {
+  if (p->t == is_object)
     return p->value.object;
-  }
-  return NULL;
+  else
+    return NULL;
 }
 struct cee_list * cee_json_to_array (struct cee_json * p) {
-  if (p->t == is_array) {
+  if (p->t == is_array)
     return p->value.array;
-  }
-  return NULL;
+  else
+    return NULL;
 }
 
 struct cee_str * cee_json_to_string (struct cee_json * p) {
-  if (p->t == is_string) {
+  if (p->t == is_string)
     return p->value.string;
-  }
-  return NULL;
+  else
+    return NULL;
 }
 
 struct cee_boxed * cee_json_to_number (struct cee_json * p) {
-  if (p->t  == is_number) {
+  if (p->t  == is_number)
     return p->value.number;
-  }
-  return NULL;
+  else
+    return NULL;
 }
 
 bool cee_json_to_bool (struct cee_json * p) {
@@ -71,7 +71,6 @@ bool cee_json_to_bool (struct cee_json * p) {
     return false;
   
   cee_segfault();
-  return false;
 }
 
 struct cee_json * cee_json_number (double d) {
@@ -129,21 +128,21 @@ void cee_json_array_append (struct cee_json * j, struct cee_json *v) {
   struct cee_list * o = cee_json_to_array(j);
   if (!o) 
     cee_segfault();
-  cee_list_append(o, v);
+  cee_list_append(&o, v);
 }
 
 void cee_json_array_append_bool (struct cee_json * j, bool b) {
   struct cee_list * o = cee_json_to_array(j);
   if (!o) 
     cee_segfault();
-  cee_list_append(o, cee_json_bool(b));
+  cee_list_append(&o, cee_json_bool(b));
 }
 
 void cee_json_array_append_string (struct cee_json * j, char * x) {
   struct cee_list * o = cee_json_to_array(j);
   if (!o) 
     cee_segfault();
-  cee_list_append(o, cee_json_string(cee_str("%s", x)));
+  cee_list_append(&o, cee_json_string(cee_str("%s", x)));
 }
 
 /*
